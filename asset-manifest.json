@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/h365-qranked/static/css/main.e6c13ad2.css",
+    "main.js": "/h365-qranked/static/js/main.418c3e55.js",
+    "index.html": "/h365-qranked/index.html",
+    "main.e6c13ad2.css.map": "/h365-qranked/static/css/main.e6c13ad2.css.map",
+    "main.418c3e55.js.map": "/h365-qranked/static/js/main.418c3e55.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.418c3e55.js"
+  ]
+}

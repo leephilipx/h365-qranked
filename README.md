@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+- [GitHub Pages Deployment](https://github.com/gitname/react-gh-pages)
+- `npm run deploy` then re-run actions
+
 ## Available Scripts
 
 In the project directory, you can run:

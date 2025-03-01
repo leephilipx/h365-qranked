@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { QRReaderContainerProps } from '../../utils/types';
+import { QRReaderContainerProps, QRReaderResponseProps } from '../../utils/types';
 
 // import QrReader from 'react-qr-scanner';
 const QrReader = require('react-qr-scanner');
@@ -15,38 +15,67 @@ class QRReaderContainer extends Component<{}, QRReaderContainerProps> {
       delay: 250,
       result: 'Hold QR Code steady and clear to scan',
       scanning: true,
+      videoDevices: [],
+      selectedDeviceId: '',
     };
     this.handleScan = this.handleScan.bind(this);
+    this.handleDeviceChange = this.handleDeviceChange.bind(this);
   }
 
-  handleScan(data: { text: string } | null) {  // not the full details of the data object
+  componentDidMount() {
+    this.getVideoDevices();
+  }
+
+  // Get list of available video devices
+  getVideoDevices() {
+    navigator.mediaDevices.enumerateDevices()
+      .then(devices => {
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        this.setState({
+          videoDevices: videoDevices,  // Use the last device in the list as the default
+          selectedDeviceId: videoDevices.length > 0 ? videoDevices[videoDevices.length-1].deviceId : '',
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  // Handle video device selection change
+  handleDeviceChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    this.setState({ selectedDeviceId: event.target.value });
+  }
+
+  // Handle QR code scan
+  handleScan(data: QRReaderResponseProps | null) {
     if (this.state.scanning && data !== null) {
+      console.log(data);
       if (data.text.startsWith('h365://')) {
         const vid = document.getElementById('qr-code-scanner') as HTMLVideoElement;
-        console.log(data.text)
         vid.pause();
         vid.remove();
         this.setState({
-          result: data !== null ? data.text : 'Hold QR Code steady and clear to scan',  // handle dynamic text
+          result: data.text,
           scanning: false,
         });
       }
     }
   }
 
+  // Handle QR code scan error
   handleError(err: Error): void {
     console.error(err);
   }
 
   render() {
-    const previewStyle: React.CSSProperties = {
-      height: 1080 / 4,
-      width: 1920 / 4,
+    const mainStyle: React.CSSProperties = {
+      maxWidth: '80%',
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
+      alignItems: 'center',
     };
 
-    const camStyle: React.CSSProperties = {
+    const previewStyle: React.CSSProperties = {
+      width: '60%',
       display: 'flex',
       justifyContent: 'center',
     };
@@ -54,21 +83,36 @@ class QRReaderContainer extends Component<{}, QRReaderContainerProps> {
     const textStyle: React.CSSProperties = {
       fontSize: 14,
       textAlign: 'center',
+      overflowWrap: 'anywhere'
     };
 
     return (
-      <>
-        <div style={camStyle}>
-          <QrReader
-            delay={this.state.delay}
-            style={previewStyle}
-            onError={this.handleError}
-            onScan={this.handleScan}
-            id={'qr-code-scanner'}
-          />
-        </div>
+      <div style={mainStyle}>
+        {/* Dropdown to select video device */}
+        <select
+          value={this.state.selectedDeviceId}
+          onChange={this.handleDeviceChange}
+          style={{ marginBottom: '10px', padding: '5px' }}
+        >
+          {this.state.videoDevices.map(device => (
+            <option key={device.deviceId} value={device.deviceId}>
+              {device.label || `Device ${device.deviceId}`}
+            </option>
+          ))}
+        </select>
+        <QrReader
+          delay={this.state.delay}
+          style={previewStyle}
+          onError={this.handleError}
+          onScan={this.handleScan}
+          id={'qr-code-scanner'}
+          constraints={this.state.selectedDeviceId && ({ audio: false, video: { deviceId: this.state.selectedDeviceId } })}
+        />
         <p style={textStyle}>{this.state.result}</p>
-      </>
+        {/* add a button to refresh the site after result is displayed */}
+        <button style={{ display: this.state.scanning ? 'none' : 'block' }}
+          onClick={() => window.location.reload()}>Refresh Page</button>
+      </div>
     )
   }
 

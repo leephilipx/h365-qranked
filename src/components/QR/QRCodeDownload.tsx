@@ -60,9 +60,7 @@ const QRCodeDownload: React.FC<QRCodeDownloadProps> = ({ qrCodeValue, userName }
     downloadLink.href = pngUrl;
     downloadLink.download = 'H365-QRanked-Code.png';
     downloadLink.click();
-
   };
-
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -73,7 +71,7 @@ const QRCodeDownload: React.FC<QRCodeDownloadProps> = ({ qrCodeValue, userName }
         bgColor='#FFFFE0'
         fgColor='#000000'
         imageSettings={{
-          src: './beeline-logo.png',
+          src: `${process.env.PUBLIC_URL}/qranked-logo.png`,
           height: 100,
           width: 100,
           excavate: true

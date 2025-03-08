@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import QRCodeDownload from './QRCodeDownload';
 import { QRReaderContainerProps, QRReaderResponseProps } from '../../utils/types';
 
 // import QrReader from 'react-qr-scanner';
@@ -21,26 +22,41 @@ class QRReaderContainer extends Component<{}, QRReaderContainerProps> {
     this.handleScan = this.handleScan.bind(this);
     this.handleDeviceChange = this.handleDeviceChange.bind(this);
   }
-
+  
+  // Check camera permission status and request permission if needed
   componentDidMount() {
-    this.getVideoDevices();
+    navigator.permissions.query({ name: "camera" as PermissionName }).then((permissionStatus) => {
+      if (permissionStatus.state === "granted") {
+        this.getVideoDevices(); // Update device list immediately if already granted
+      } else if (permissionStatus.state === "prompt") {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(() => this.getVideoDevices()) // Update devices after permission is granted
+          .catch(err => console.error("Camera access denied:", err));
+      }
+      permissionStatus.onchange = () => {
+        if (permissionStatus.state === "granted") {
+          this.getVideoDevices();
+        }
+      };
+    });
   }
 
-  // Get list of available video devices
+  // Get list of available video devices, with previously selected device if available
   getVideoDevices() {
     navigator.mediaDevices.enumerateDevices()
       .then(devices => {
-        const videoDevices = devices.filter(device => device.kind === 'videoinput');
-        this.setState({
-          videoDevices: videoDevices,  // Use the last device in the list as the default
-          selectedDeviceId: videoDevices.length > 0 ? videoDevices[videoDevices.length-1].deviceId : '',
-        });
+        const videoDevices = devices.filter(device => device.kind === "videoinput");
+        const savedDeviceId = localStorage.getItem("selectedCamera");  // Retrieve previously selected device from localStorage
+        const selectedDeviceId = (savedDeviceId && videoDevices.find(device => device.deviceId === savedDeviceId)) ?
+          savedDeviceId : videoDevices[0]?.deviceId || '';
+        this.setState({ videoDevices: videoDevices, selectedDeviceId: selectedDeviceId });
       })
       .catch(err => console.error(err));
   }
 
-  // Handle video device selection change
+  // Handle video device selection change and store selected device
   handleDeviceChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    localStorage.setItem("selectedCamera", event.target.value);
     this.setState({ selectedDeviceId: event.target.value });
   }
 
@@ -109,9 +125,12 @@ class QRReaderContainer extends Component<{}, QRReaderContainerProps> {
           constraints={this.state.selectedDeviceId && ({ audio: false, video: { deviceId: this.state.selectedDeviceId } })}
         />
         <p style={textStyle}>{this.state.result}</p>
-        {/* add a button to refresh the site after result is displayed */}
-        <button style={{ display: this.state.scanning ? 'none' : 'block' }}
-          onClick={() => window.location.reload()}>Refresh Page</button>
+        {/* after result is displayed, add download and refresh button */}
+        {this.state.scanning ? null :
+          <>
+            <QRCodeDownload qrCodeValue={this.state.result} userName={'scanner'}></QRCodeDownload>
+            <button onClick={() => window.location.reload()}>Refresh Page</button>
+          </>}
       </div>
     )
   }

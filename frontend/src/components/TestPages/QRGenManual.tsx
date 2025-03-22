@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import QRCodeDownload from './QR/QRCodeDownload';
+import QRCodeDownload from '../QR/QRCodeDownload';
 
 
-function QRGenManual() {
+export default function QRGenManual() {
 
   useEffect(() => {
     document.title = "Test Page for QR Code Manual Generation";
@@ -27,5 +27,3 @@ function QRGenManual() {
   );
 
 }
-
-export default QRGenManual;

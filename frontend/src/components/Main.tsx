@@ -1,4 +1,4 @@
-function Main() {
+export default function Main() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -30,6 +30,10 @@ function Main() {
               <td>QR Code Scanner:</td>
               <td><a href="#/scanner">/scanner</a></td>
             </tr>
+            <tr>
+              <td>Alpha App (Under Development):</td>
+              <td><a href="#/alpha">/alpha</a></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -38,5 +42,3 @@ function Main() {
   );
 
 }
-
-export default Main;

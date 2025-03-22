@@ -5,7 +5,7 @@ import { chunkSubstr } from '../../utils/helpers';
 import { QRCodeDownloadProps } from '../../utils/types';
 
 
-const QRCodeDownload: React.FC<QRCodeDownloadProps> = ({ qrCodeValue, userName }) => {
+const QRCodeDownload: React.FC<QRCodeDownloadProps> = ({ qrCodeValue, username }) => {
 
   const downloadQRCode = () => {
 
@@ -37,9 +37,9 @@ const QRCodeDownload: React.FC<QRCodeDownloadProps> = ({ qrCodeValue, userName }
 
     // Add the subtitle text, 2 variants depending on whether there is a user name
     let textSubtitle: string[];
-    if (userName) {
+    if (username) {
       textSubtitle = [
-        `Downloaded by ${userName}`,
+        `Downloaded by ${username}`,
         `[${currentDate.toDateString()} ${currentDate.toLocaleTimeString()}]`
       ];
       context.font = '16px monospace'

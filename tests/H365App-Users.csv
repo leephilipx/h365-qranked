@@ -1,3 +1,5 @@
-"UserId","Username","CodeIdRedeemed","CodeIdSubmitted","DateTimeCreated","Name","NextUserId","Password"
-"1","testuser1","[{""N"":""1""}]","[{""N"":""1""}]","2024-02-28T00:00:00","Test User 1","","609db106c868b75beaf897d7d48da3c09ad9f6f1f785b2f4a0a1cd36af14e554"
-"0","autoincrement","","","","","2",""
+"UserId","CodeCountRedeemedTOT","CodeCountSubmittedNG","CodeCountSubmittedTOT","DateTimeCreated","NextUserId","Password","UserAlias","Username"
+"3","0","0","0","2024-06-16T16:00:00Z","","609db106c868b75beaf897d7d48da3c09ad9f6f1f785b2f4a0a1cd36af14e554","Test User 3","testuser3"
+"2","1","0","0","2024-06-15T16:00:00Z","","609db106c868b75beaf897d7d48da3c09ad9f6f1f785b2f4a0a1cd36af14e554","Test User 2","testuser2"
+"1","0","0","1","2024-02-27T16:00:00Z","","609db106c868b75beaf897d7d48da3c09ad9f6f1f785b2f4a0a1cd36af14e554","Test User 1","testuser1"
+"0","","","","","3","","","autoincrement"

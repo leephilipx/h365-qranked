@@ -128,7 +128,7 @@ class QRReaderContainer extends Component<{}, QRReaderContainerProps> {
         {/* after result is displayed, add download and refresh button */}
         {this.state.scanning ? null :
           <>
-            <QRCodeDownload qrCodeValue={this.state.result} userName={'scanner'}></QRCodeDownload>
+            <QRCodeDownload qrCodeValue={this.state.result} username={'scanner'}></QRCodeDownload>
             <button onClick={() => window.location.reload()}>Refresh Page</button>
           </>}
       </div>

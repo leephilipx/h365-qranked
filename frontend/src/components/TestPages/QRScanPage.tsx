@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import QRReaderContainer from './QR/QRReaderContainer';
+import QRReaderContainer from '../QR/QRReaderContainer';
 
 
-function QRScanPage() {
+export default function QRScanPage() {
 
   useEffect(() => {
     document.title = "Test Page for QR Code Scanning";
@@ -15,5 +15,3 @@ function QRScanPage() {
     </div>
   );
 }
-
-export default QRScanPage;

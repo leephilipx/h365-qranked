@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import QRCodeDownload from './QRCodeDownload';
-import { QRReaderContainerProps, QRReaderResponseProps } from '../../utils/types';
+import { QRReaderContainerProps, QRReaderResponseProps } from '../../../utils/types';
 
 // import QrReader from 'react-qr-scanner';
 const QrReader = require('react-qr-scanner');

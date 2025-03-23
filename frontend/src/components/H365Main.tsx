@@ -1,73 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Button, Card, Grid, Layout, Menu, Table, message,  } from "antd";
-import Login from "./LoginModal";
-import Leaderboard from "./Leaderboard";
+import { Layout, Menu } from "antd";
+import H365Home from "./H365Home";
 
 import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 
-import { getLeaderboard, getTableData } from "../services/api";
-import { isUserLoggedIn } from "../services/auth";
-import { LeaderboardEntryProps, TableDataProps } from "../utils/types";
-
 const { Content, Footer, Sider } = Layout;
 
-
-const H365Main: React.FC = () => {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntryProps[]>([]);
-  const [players, setPlayers] = useState<TableDataProps[]>([]);
-  // const [code, setCode] = useState("");
-  const [isLoginVisible, setIsLoginVisible] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(isUserLoggedIn());
-
-  useEffect(() => {
-    fetchLeaderboard();
-    fetchTableData();
-  }, []);
-
-  const fetchLeaderboard = async () => {
-    try {
-      const data = await getLeaderboard();
-      setLeaderboard(data);
-    } catch (error) {
-      message.error("Failed to fetch leaderboard");
-    }
-  };
-
-  const fetchTableData = async () => {
-    try {
-      const data = await getTableData();
-      setPlayers(data);
-      message.success("Updated with latest data");
-    } catch (error) {
-      message.error("Failed to fetch table data");
-    }
-  };
-
-  const handleDownload = () => {
-    if (!isLoggedIn) {
-      setIsLoginVisible(true);
-    } else {
-      message.success("Downloading code ...");
-    }
-  };
-
-  const columns = [
-    { title: "Player", dataIndex: "player", key: "player" },
-    { title: "Code", dataIndex: "code", key: "code" },
-    {
-      title: "Action",
-      key: "action",
-      render: (_: any, record: TableDataProps) =>
-        record.claimed ? (
-          <Button disabled>Claimed</Button>
-        ) : (
-          <Button type="primary" onClick={handleDownload}>Download</Button>
-        ),
-    },
-  ];
-
-  type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>['items'][number];
 
   function getItem(
     label: React.ReactNode,
@@ -94,6 +34,9 @@ const H365Main: React.FC = () => {
     getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
     getItem('Files', '9', <FileOutlined />),
   ];
+
+
+const H365Main: React.FC = () => {
 
   const [collapsed, setCollapsed] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -128,45 +71,9 @@ const H365Main: React.FC = () => {
       <Layout style={{
         marginLeft: collapsed ? (isMobile ? 50 : 80) : 200,
         transition: 'margin-left 0.3s ease',
-        // padding: isMobile ? "40px" : "20px"
        }}>
         <Content style={{ padding: isMobile ? "20px" : "40px" }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>H365 QRanked</Breadcrumb.Item>
-          </Breadcrumb>
-          
-          {/* Dev Tools Section */}
-          <Card title="🛠️ Dev Tools" style={{ marginBottom: 20 }}>
-            <Button danger type="dashed" style={{ marginRight: 10 }} onClick={() => window.location.href = '/h365-qranked'}>
-              Back to Main Site
-            </Button>
-            <Button danger type="dashed" style={{ marginRight: 10 }} onClick={() => setIsLoggedIn(!isLoggedIn)}>
-              Force {isLoggedIn ? "Log Out" : "Log In"}
-            </Button>
-          </Card>
-
-          {/* Leaderboard Section */}
-          <Card title="🏆 Top Players" style={{ marginBottom: 20 }}>
-            <Leaderboard leaderboard={leaderboard} />
-          </Card>
-
-          {/* Players & Codes Table Section */}
-          <Card title="📋 Players & Codes">
-            <Table
-              columns={columns}
-              dataSource={players}
-              rowKey="id"
-              pagination={{ pageSize: 5 }}
-              scroll={{ x: "100vw" }}
-            />
-          </Card>
-
-          {/* Login Modal */}
-          <Login
-            visible={isLoginVisible}
-            onClose={() => setIsLoginVisible(false)}
-            onLoginSuccess={() => setIsLoggedIn(true)}
-          />
+          <H365Home />
         </Content>
 
         <Footer style={{ textAlign: 'center' }}>

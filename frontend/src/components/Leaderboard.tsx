@@ -49,12 +49,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ leaderboard }) => {
     <div>
       {leaderboard.length > 0 && (
         <Card type="inner" style={{ marginBottom: 10, backgroundColor: '#fffbe6' }}>
-          <Text strong style={{
+          <Text style={{
             fontSize: '140%',
+            fontWeight: '800',
             background: 'linear-gradient(90deg, #ff9900, #9900ff, #ff9900)',
             WebkitBackgroundClip: 'text',
             color: 'transparent',
-            backgroundSize: '200% 100%',
+            backgroundSize: '400% 100%',
             animation: 'gradientMove 2s ease-in-out infinite',
           }}>
             {leaderboard[0].userAlias}

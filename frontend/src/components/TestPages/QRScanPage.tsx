@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import QRReaderContainer from '../QR/QRReaderContainer';
+import QRReaderContainer from './QR/QRReaderContainer';
 
 
 export default function QRScanPage() {

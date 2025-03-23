@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import QRCodeDownload from '../QR/QRCodeDownload';
+import QRCodeDownload from './QR/QRCodeDownload';
 
 
 export default function QRGenManual() {

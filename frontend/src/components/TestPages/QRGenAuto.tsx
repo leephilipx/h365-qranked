@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import QRCodeDownload from '../QR/QRCodeDownload';
+import QRCodeDownload from './QR/QRCodeDownload';
 
 import { TEST_QR_CODE_VAL } from '../../utils/constants';
 

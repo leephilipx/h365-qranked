@@ -1,8 +1,8 @@
 import QRCodeCanvas from 'qrcode.react';
 
-import { QR_GEN_SIZE } from '../../utils/constants';
-import { chunkSubstr } from '../../utils/helpers';
-import { QRCodeDownloadProps } from '../../utils/types';
+import { QR_GEN_SIZE } from '../../../utils/constants';
+import { chunkSubstr } from '../../../utils/helpers';
+import { QRCodeDownloadProps } from '../../../utils/types';
 
 
 const QRCodeDownload: React.FC<QRCodeDownloadProps> = ({ qrCodeValue, username }) => {

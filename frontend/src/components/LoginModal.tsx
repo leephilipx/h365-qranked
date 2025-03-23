@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Modal, Input, Button, message } from "antd";
+import { Button, Input, Modal, message } from "antd";
+
 import { hashPassword, setLoginTimestamp } from "../services/auth";
 import { loginUser, registerUser } from "../services/api";
 import { LoginProps } from "../utils/types";

@@ -4,7 +4,7 @@ import Main from './components/Main';
 import QRGenAuto from './components/TestPages/QRGenAuto';
 import QRGenManual from './components/TestPages/QRGenManual';
 import QRScanPage from './components/TestPages/QRScanPage';
-import H365Main from './components/RankingCompetition';
+import H365Main from './components/H365Main';
 
 function App() {
   return (

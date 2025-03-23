@@ -10,9 +10,8 @@ import { getLeaderboard, getTableData } from "../services/api";
 import { isUserLoggedIn } from "../services/auth";
 import { LeaderboardEntryProps, TableDataProps } from "../utils/types";
 
-
 const { Content, Footer, Sider } = Layout;
-const { useBreakpoint } = Grid;
+
 
 const H365Main: React.FC = () => {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntryProps[]>([]);
@@ -20,7 +19,6 @@ const H365Main: React.FC = () => {
   // const [code, setCode] = useState("");
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(isUserLoggedIn());
-  const screens = useBreakpoint();
 
   useEffect(() => {
     fetchLeaderboard();
@@ -98,20 +96,41 @@ const H365Main: React.FC = () => {
   ];
 
   const [collapsed, setCollapsed] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Detect screen size changes for responsiveness
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // You can adjust the width threshold as needed
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="sidebar-logo" style={{ padding: "16px", textAlign: "center" }}><img
+    <Layout style={{ minHeight: "100dvh" }}>
+      <Sider collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+        collapsedWidth={isMobile ? 50 : 80}
+        trigger={isMobile ? null : undefined} // Hide expand button on mobile
+        style={{ position: 'fixed', height: '100vh' }}
+      >
+        <div className="sidebar-logo" style={{ padding: isMobile ? 10 : 16, textAlign: "center" }}><img
           src={`${process.env.PUBLIC_URL}/qranked-logo.png`}
           alt="Logo"
-          style={{ width: collapsed ? "40px" : "60px", transition: "width 0.3s" }}
+          style={{ width: collapsed ? (isMobile ? 30 : 40) : 60, transition: "width 0.3s" }}
         /></div>
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>
 
-      <Layout>
-        <Content style={{ padding: screens.md ? "40px" : "20px", margin: '0 16px' }}>
+      <Layout style={{
+        marginLeft: collapsed ? (isMobile ? 50 : 80) : 200,
+        transition: 'margin-left 0.3s ease',
+        // padding: isMobile ? "40px" : "20px"
+       }}>
+        <Content style={{ padding: isMobile ? "20px" : "40px" }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>H365 QRanked</Breadcrumb.Item>
           </Breadcrumb>
@@ -138,6 +157,7 @@ const H365Main: React.FC = () => {
               dataSource={players}
               rowKey="id"
               pagination={{ pageSize: 5 }}
+              scroll={{ x: "100vw" }}
             />
           </Card>
 
